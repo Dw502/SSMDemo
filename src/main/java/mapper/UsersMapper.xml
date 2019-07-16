@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mapper接口的全限定类名要与mapper映射文件对应的namespace一致-->
+<mapper namespace="mapper.UsersMapper">
+    <!--  执行查询所有的操作	-->
+    <select id="queryUsers"  parameterType="UsersQueryVO" resultType="Users">
+        select * from user
+        <!--动态sql,智能生成sql -->
+        <where>
+            <!--users就是UsersQueryVO的属性  -->
+            <if test="users!=null">
+                <if test="users.username!=null and users.username!=''">
+                    and username like '%${items.username}%'
+                </if>
+            </if>
+            <if test="users!=null">
+                <if test="users.password!=null and users.password!=''">
+                    and price=#{users.password}
+                </if>
+            </if>
+        </where>
+    </select>
+    <!--	#{} 表示一个占位符，简单数据类型，可以任意-->
+    <select id="queryUsersById" parameterType="int" resultType="Users">
+		select * from user where id=#{id}
+	</select>
+</mapper>
